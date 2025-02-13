@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypted Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+</head>
+<body>
+    <div id="encrypted-chat-container">
+        <h2>Encrypted Messages</h2>
+        <div id="encrypted-messages" class="messages"></div>
+    </div>
+
+    <script>
+        const socket = io.connect("http://localhost:5000");
+
+        socket.on('receive_encrypted_message', function(data) {
+            console.log("🔹 Encrypted message received:", data);
+
+            const messagesDiv = document.getElementById('encrypted-messages');
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `<strong>${data.name}:</strong> ${data.encrypted}`;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    </script>
+</body>
+</html>
